@@ -9,13 +9,7 @@
 		openDetails: (step: Footstep) => void;
 	};
 
-	let { step, toggleComplete, updateFootstep, openDetails }: Props = $props();
-
-    let name = $state('');
-
-    $effect(() => {
-        name = step.name;
-    });
+	let { step = $bindable(), toggleComplete, updateFootstep, openDetails }: Props = $props();
 
 	function handleDetailsKeydown(e: KeyboardEvent) {
 		if (e.key === 'Enter' || e.key === ' ') {
@@ -24,11 +18,31 @@
 		}
 	}
 
-    function handleBlur() {
-        if (name != step.name) {
-            updateFootstep({... step, name});
-        }
-    }
+	let mirrorWidth = $state(0);
+	const MIN_WIDTH = 72;
+	const MAX_WIDTH = 260;
+
+	let inputWidth = $derived.by(() =>
+		Math.max(MIN_WIDTH, Math.min(mirrorWidth + 2, MAX_WIDTH))
+	);
+
+	let saveTimer: ReturnType<typeof setTimeout> | null = null;
+
+	function scheduleSave() {
+		if (saveTimer) clearTimeout(saveTimer);
+		saveTimer = setTimeout(() => {
+			updateFootstep(step);
+			saveTimer = null;
+		}, 300);
+	}
+
+	function flushSave() {
+		if (saveTimer) {
+			clearTimeout(saveTimer);
+			saveTimer = null;
+		}
+		updateFootstep(step);
+	}
 </script>
 
 <div class="flex items-center gap-3 px-3 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800/60">
@@ -49,25 +63,35 @@
 		</span>
 	</label>
 
-	<input
-		type="text"
-		placeholder="next step"
-		bind:value={name}
-        onblur={handleBlur}
-		class="w-3/5 md:w-2/5 py-2 focus:outline-none text-sm text-zinc-800 dark:text-zinc-100"
-		class:line-through={step.completed}
-		class:text-zinc-400={step.completed}
-		class:dark:text-zinc-500={step.completed}
-	/>
+	<div class="relative shrink-0">
+		<span
+			bind:offsetWidth={mirrorWidth}
+			aria-hidden="true"
+			class="pointer-events-none invisible absolute left-0 top-0 inline-block whitespace-pre py-2 text-sm text-zinc-800 dark:text-zinc-100"
+		>
+			{step.name || 'next...'}
+		</span>
 
-	<div class="h-10 w-px bg-zinc-900/10 dark:bg-white/10"></div>
+		<input
+			type="text"
+			placeholder="next..."
+			bind:value={step.name}
+			oninput={scheduleSave}
+			onblur={flushSave}
+			style={`width:${inputWidth+40}px`}
+			class="min-w-[72px] max-w-[260px] bg-transparent py-2 text-sm text-zinc-800 focus:outline-none dark:text-zinc-100"
+			class:line-through={step.completed}
+			class:text-zinc-400={step.completed}
+			class:dark:text-zinc-500={step.completed}
+		/>
+	</div>
 
-	<div
+    <div
 		role="button"
 		tabindex="0"
 		aria-label="Open step details"
 		onclick={() => openDetails(step)}
 		onkeydown={handleDetailsKeydown}
-		class="h-12 w-2/5 md:w-3/5"
+		class="h-12 flex-1"
 	></div>
 </div>

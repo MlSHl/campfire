@@ -2,9 +2,8 @@
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
     import Step from '$lib/components/footsteps/Step.svelte';
-    import AddStep from '$lib/components/footsteps/AddStep.svelte';
     import StepCard from '$lib/components/footsteps/StepCard.svelte';
-    import ClearCompleted from '$lib/components/footsteps/ClearCompleted.svelte'
+    import AddAndClear from '$lib/components/footsteps/AddAndClear.svelte';
 
 	import type { Footstep } from '$lib/db/types';
 	import {
@@ -95,13 +94,10 @@
 </script>
 
 <div class="relative md:h-[calc(100vh-5rem)]">
-    {#each steps as step (step.id)}
-        <Step {step} {toggleComplete} {updateFootstep} {openDetails}/>
+    {#each steps as step, i (step.id)}
+        <Step bind:step={steps[i]} {toggleComplete} {updateFootstep} {openDetails}/>
     {/each}
-    <div class="flex">
-        <AddStep {addFootstep}/>
-        <ClearCompleted {clearCompleted}/>
-    </div>
+    <AddAndClear {addFootstep}{clearCompleted }/>
 
     {#if selectedStep}
         <StepCard {selectedStep} {closeDetails} {saveSelectedStep} {deleteSelectedStep}/>
