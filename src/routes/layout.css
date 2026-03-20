@@ -2,15 +2,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-    * {
-        @apply transition-colors duration-200 ease-in-out;
-    }
+	* {
+		@apply transition-colors duration-200 ease-in-out;
+	}
 }
 
 .btn {
-    @apply py-4 text-center transition-colors duration-200 ease-in-out;
-    /* Light Mode */
-    @apply text-stone-900 hover:bg-orange-200/50 hover:text-orange-900;
-    /* Dark Mode */
-    @apply dark:text-orange-100/70 dark:hover:bg-stone-800/80 dark:hover:text-orange-400;
+	@apply py-4 text-center transition-colors duration-200 ease-in-out;
+	/* Light Mode */
+	@apply text-stone-900 hover:bg-orange-200/50 hover:text-orange-900;
+	/* Dark Mode */
+	@apply dark:text-orange-100/70 dark:hover:bg-stone-800/80 dark:hover:text-orange-400;
 }

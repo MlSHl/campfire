@@ -1,31 +1,109 @@
 <script lang="ts">
-    import Step from '$lib/footsteps/Step.svelte';
-    import type { StepType } from '$lib/types/step.type';
-    let steps = $state<StepType[]>([
-        {id: 1, name: "make UI", completed: false},
-        {id: 2, name: "make features", completed: false},
-        {id: 3, name: "make syncing", completed: false}
-    ]);
+    import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+    import Step from '$lib/components/footsteps/Step.svelte';
+    import AddStep from '$lib/components/footsteps/AddStep.svelte';
+    import StepCard from '$lib/components/footsteps/StepCard.svelte';
+    import ClearCompleted from '$lib/components/footsteps/ClearCompleted.svelte'
 
-    function addStep(step: StepType):  number {
-        step.id = steps[-1].id + 1;
-        steps.push(step);
-        return step.id;
+	import type { Footstep } from '$lib/db/types';
+	import {
+        toggleCompleteFootstep,
+		getAllFootsteps,
+		createFootstep,
+		updateFootstep,
+        deleteFootstep,
+        getCompletedCount,
+        deleteCompletedSteps
+	} from '$lib/db/footsteps';
+
+    let steps = $state<Footstep[]>([]);
+    let isMobile = $state(false);
+    let selectedStep = $state<Footstep | null>(null);
+    let completedCount = $state(0);
+
+    $effect(() => {
+        if (typeof window === "undefined") return;
+
+        const media = window.matchMedia('(max-width: 767px)');
+
+        const update = () => isMobile = media.matches;
+
+        update();
+        media.addEventListener('change', update);
+
+        return () => media.removeEventListener('change', update);
+    });
+
+    onMount(async () => {
+		steps = await getAllFootsteps();
+        completedCount = await getCompletedCount();
+	});
+
+    async function addFootstep() {
+        let emptyStep: Footstep = await createFootstep({name: '', content: '', completed: 0});
+        steps.push(emptyStep);
     }
 
-    function updateStep(step: StepType, id:number) {
-        steps[id] = step;
-    }
-
-    function completeStep(id: number) {
-        const step = steps.find((step) => step.id === id);
+    async function toggleComplete(id: string) {
+        await toggleCompleteFootstep(id);
+        let step = steps.find((step) => step.id === id);
         if (step) {
-            step.completed = true;
+            if (step.completed) {
+                completedCount--;
+                step.completed = 0;
+            } else {
+                completedCount++;
+                step.completed = 1;
+            }
         }
     }
+
+    function openDetails(step: Footstep) {
+        if (isMobile) {
+            goto(`/footsteps/${step.id}`);
+            return;
+        }
+
+        selectedStep = step;
+    }
+
+    function closeDetails() {
+        selectedStep = null;
+    }
+
+    async function saveSelectedStep() {
+        if (selectedStep) {
+            await updateFootstep(selectedStep);
+        }
+    }
+
+    async function deleteSelectedStep() {
+        if (selectedStep) {
+            await deleteFootstep(selectedStep.id);
+            selectedStep = null;
+            steps = await getAllFootsteps();
+        }
+    }
+
+    async function clearCompleted() {
+        await deleteCompletedSteps();
+        steps = await getAllFootsteps();
+        completedCount = await getCompletedCount();
+    }
+
 </script>
 
-{#each steps as step}
-    <Step {step} {completeStep} {addStep} {updateStep}/>
-{/each}
+<div class="relative md:h-[calc(100vh-5rem)]">
+    {#each steps as step (step.id)}
+        <Step {step} {toggleComplete} {updateFootstep} {openDetails}/>
+    {/each}
+    <div class="flex">
+        <AddStep {addFootstep}/>
+        <ClearCompleted {clearCompleted}/>
+    </div>
 
+    {#if selectedStep}
+        <StepCard {selectedStep} {closeDetails} {saveSelectedStep} {deleteSelectedStep}/>
+    {/if}
+</div>
