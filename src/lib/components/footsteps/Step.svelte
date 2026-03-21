@@ -78,7 +78,7 @@
 			bind:value={step.name}
 			oninput={scheduleSave}
 			onblur={flushSave}
-			style={`width:${inputWidth+40}px`}
+			style={`width:${inputWidth+30}px`}
 			class="min-w-[72px] max-w-[260px] bg-transparent py-2 text-sm text-zinc-800 focus:outline-none dark:text-zinc-100"
 			class:line-through={step.completed}
 			class:text-zinc-400={step.completed}

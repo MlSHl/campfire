@@ -12,6 +12,7 @@
     function handleBlur () {
         saveSelectedStep();
     }
+
 </script>
 
 

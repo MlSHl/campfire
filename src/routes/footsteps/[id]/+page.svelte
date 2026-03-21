@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { getFootstep, updateFootstep, deleteFootstep } from '$lib/db/footsteps';
 	import type { Footstep } from '$lib/db/types';
-	import BackIcon from '$lib/icons/BackIcon.svelte';
+    import MobileBar from "$lib/components/MobileBar.svelte";
 
 	let step = $state<Footstep | null>(null);
 	let loading = $state(true);
@@ -30,23 +30,6 @@
 		await updateFootstep(step);
 	}
 
-	function queueSave() {
-		if (saveTimeout) clearTimeout(saveTimeout);
-
-		saveTimeout = setTimeout(() => {
-			saveStep();
-		}, 400);
-	}
-
-	$effect(() => {
-		if (!step || loading) return;
-
-		step.name;
-		step.content;
-
-		queueSave();
-	});
-
 	async function deleteStep() {
 		if (!step) return;
 		await deleteFootstep(step.id);
@@ -60,38 +43,16 @@
 	</div>
 {:else if step}
 	<div class="min-h-screen text-zinc-900 dark:text-zinc-100">
-		<div class="border-b border-orange-200/80 bg-orange-100/60 dark:border-stone-800 dark:bg-[#151a28]">
-			<div class="mx-auto flex max-w-lg items-center justify-between px-2">
-				<a
-					href="/footsteps"
-					onclick={saveStep}
-					aria-label="Go back"
-					class="rounded-xl p-2 text-zinc-700 transition hover:bg-black/5 dark:text-zinc-200 dark:hover:bg-white/5"
-				>
-					<BackIcon />
-				</a>
-
-				<button
-					type="button"
-					onclick={saveStep}
-					class="my-1 rounded-xl bg-emerald-800 px-4 py-1 text-sm font-medium text-white transition hover:opacity-90 dark:bg-orange-500"
-				>
-					Save
-				</button>
-			</div>
-		</div>
-
+    <MobileBar isMobile={true} onBackClick={saveStep} backDestination={"/footsteps"} onButtonClick={saveStep} buttonText={"Save"} />
 		<div class="mx-auto max-w-2xl px-4 pt-5">
-			<div class="border-b border-orange-200/80 dark:border-stone-800">
 				<input
 					type="text"
 					bind:value={step.name}
 					placeholder="Untitled step"
-					class="w-full bg-transparent text-center text-lg font-semibold tracking-tight text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500 md:text-4xl"
+                    class="w-full bg-transparent text-center text-lg font-semibold tracking-tight text-zinc-900 placeholder:text-zinc-400 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500 md:text-4xl border-b border-transparent focus:border-orange-200/80 focus:dark:border-stone-800"
 				/>
-			</div>
 
-			<div class="mt-4 overflow-hidden rounded-2xl border border-orange-200/80 bg-white/50 shadow-sm dark:border-stone-800 dark:bg-[#151a28]/60">
+			<div class="mt-2 overflow-hidden rounded-2xl border border-orange-200/80 bg-white/50 shadow-sm dark:border-stone-800 dark:bg-[#151a28]/60">
 				<div class="p-4">
 					<textarea
 						bind:value={step.content}

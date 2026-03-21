@@ -1,17 +1,17 @@
 import { getDb } from './porter';
-import type { Logbook } from './types';
+import type { Log } from './types';
 
-export async function getAllLogbooks(): Promise<Logbook[]> {
+export async function getAllLogs(): Promise<Log[]> {
 	const db = await getDb();
 	return db.getAll('logbook');
 }
 
-export async function getLogbook(id: string): Promise<Logbook | undefined> {
+export async function getLog(id: string): Promise<Log | undefined> {
 	const db = await getDb();
 	return db.get('logbook', id);
 }
 
-export async function createLogbook(
+export async function createLog(
 	data: Omit<Logbook, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<Logbook> {
 	const db = await getDb();
@@ -28,7 +28,7 @@ export async function createLogbook(
 	return logbook;
 }
 
-export async function updateLogbook(logbook: Logbook): Promise<void> {
+export async function updateLog(logbook: Log): Promise<void> {
 	const db = await getDb();
 
 	await db.put('logbook', {
@@ -37,7 +37,28 @@ export async function updateLogbook(logbook: Logbook): Promise<void> {
 	});
 }
 
-export async function deleteLogbook(id: string): Promise<void> {
+export async function deleteLog(id: string): Promise<void> {
 	const db = await getDb();
 	await db.delete('logbook', id);
+}
+
+export async function updateLastVisitedAt(id: string): Promise<void> {
+    const db = await getDb();
+    const logbook = await db.get('logbook', id);
+    await db.put('logbook', {
+        ...logbook,
+        lastVisitedAt: new Date().toISOString()
+    });
+}
+
+export async function getLastOpenedLog(): Promise<Log | undefined> {
+    const db = await getDb();
+    const logs = await db.getAll('logbook');
+    const visitedLogs = logs.filter((log) => log.lastVisitedAt);
+
+    visitedLogs.sort(
+        (a, b) => new Date(b.lastVisitedAt ?? 0).getTime() - new Date(a.lastVisitedAt ?? 0).getTime()
+    );
+
+    return visitedLogs[0]; 
 }

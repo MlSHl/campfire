@@ -1,9 +1,10 @@
-export type Logbook = {
+export type Log = {
 	id: string;
 	name: string;
 	content: string;
 	createdAt: string;
 	updatedAt: string;
+    lastVisitedAt: string;
 };
 
 export type Footstep = {
