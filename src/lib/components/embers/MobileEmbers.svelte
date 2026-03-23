@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Ember } from '$lib/db/types';
     import EmberCard from "$lib/components/embers/EmberCard.svelte";
+    import EmberPlusCard from "$lib/components/embers/EmberPlusCard.svelte";
 
 	type Props = {
 		columns: string[];
@@ -21,4 +22,6 @@
 {#each embers as ember}
     <EmberCard {columns} {ember} {updateEmberField} {saveEmber}/>
 {/each}
+<!-- Consider making this a permanent bottom bar for mobile (no keyboard for this page)/-->
+<EmberPlusCard {addEmber}/>
 
