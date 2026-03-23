@@ -3,7 +3,10 @@ import type { Footstep } from './types';
 
 export async function getAllFootsteps(): Promise<Footstep[]> {
 	const db = await getDb();
-	return db.getAll('footsteps');
+	let footsteps = await db.getAll('footsteps');
+    return footsteps.sort(
+        (a, b) => new Date(a.createdAt ?? 0).getTime() - new Date(b.createdAt ?? 0).getTime()
+    );
 }
 
 export async function getFootstep(id: string | undefined): Promise<Footstep | undefined> {

@@ -3,7 +3,10 @@ import type { Log } from './types';
 
 export async function getAllLogs(): Promise<Log[]> {
 	const db = await getDb();
-	return db.getAll('logbook');
+	let logs = await db.getAll('logbook');
+    return logs.sort(
+        (a, b) => new Date(b.createdAt ?? 0).getTime() - new Date(a.createdAt ?? 0).getTime()
+    );
 }
 
 export async function getLog(id: string): Promise<Log | undefined> {

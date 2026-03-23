@@ -3,7 +3,10 @@ import type { Ember } from './types';
 
 export async function getAllEmbers(): Promise<Ember[]> {
 	const db = await getDb();
-	return db.getAll('embers');
+	let embers = await db.getAll('embers');
+    return embers.sort(
+        (a, b) => new Date(a.createdAt ?? 0).getTime() - new Date(b.createdAt ?? 0).getTime()
+    );
 }
 
 export async function getEmber(id: string): Promise<Ember | undefined> {
