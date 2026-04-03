@@ -1,7 +1,7 @@
 import { build, files, prerendered, version } from '$service-worker';
 
 const CACHE = `campfire-${version}`;
-const APP_SHELL = new Request('/', { credentials: 'same-origin' });
+const APP_SHELL = new Request('/200.html', { credentials: 'same-origin' });
 
 const ASSETS = [...build, ...files, ...prerendered].filter(
 	(asset) => !asset.startsWith('/.')

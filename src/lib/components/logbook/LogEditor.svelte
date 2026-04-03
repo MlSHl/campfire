@@ -23,10 +23,16 @@
 	}
 </script>
 
-<MobileBar {isMobile} onBackClick={handleBlur} backDestination={"/logbook"} onButtonClick={handleDelete} buttonText={"Delete"} />
+<div class="flex h-full flex-col">
+	<MobileBar
+		{isMobile}
+		onBackClick={handleBlur}
+		backDestination="/logbook"
+		onButtonClick={handleDelete}
+		buttonText="Delete"
+	/>
 
-{#if log}
-	<div class="flex h-[calc(100vh-5rem)] flex-col">
+	{#if log}
 		<div class={`flex min-h-0 flex-1 flex-col ${isMobile ? 'px-4 pb-4 pt-2' : 'px-2 py-2 md:px-2 md:py-2'}`}>
 			<input
 				type="text"
@@ -47,16 +53,16 @@
 				placeholder="Begin logging..."
 				class={`mt-5 min-h-0 w-full flex-1 resize-none border-0 bg-transparent outline-none placeholder:text-stone-400 focus:outline-none dark:placeholder:text-slate-500 ${
 					isMobile
-						? 'text-sm leading-6 text-stone-800 dark:text-[#b7ada1]'
+						? 'text-base leading-6 text-stone-800 dark:text-[#b7ada1]'
 						: 'text-base leading-7 text-stone-800 dark:text-[#b7ada1]'
 				}`}
 			>{log.content}</textarea>
 		</div>
-	</div>
-{:else}
-	<div class={`flex h-[calc(100vh-5rem)] items-start ${isMobile ? 'px-4 py-4' : 'px-8 py-8 md:px-10 md:py-10'}`}>
-		<div class="text-stone-500 dark:text-slate-500">
-			Select a log
+	{:else}
+		<div class={`flex min-h-0 flex-1 items-start ${isMobile ? 'px-4 py-4' : 'px-8 py-8 md:px-10 md:py-10'}`}>
+			<div class="text-stone-500 dark:text-slate-500">
+				Select a log
+			</div>
 		</div>
-	</div>
-{/if}
+	{/if}
+</div>

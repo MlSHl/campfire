@@ -1,0 +1,14 @@
+[package]
+name = "rs-worker"
+version = "0.1.0"
+edition = "2021"
+authors = ["Mishi <mishi.beraia@gmail.com>"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+worker = { version = "0.7", features = ['http'] }
+worker-macros = { version = "0.7", features = ['http'] }
+http = "1.3"
+serde = { version = "1.0.228", features = ["derive"] }
