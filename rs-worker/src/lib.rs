@@ -1,20 +1,52 @@
 use worker::*;
 
+use crate::model::Log;
+
 mod model;
+mod repository;
 mod service;
 
 #[event(fetch)]
 async fn fetch(
-    req: HttpRequest,
-    _env: Env, // DB later
+    mut req: Request,
+    env: Env, // for DB
     _ctx: Context,
 ) -> Result<Response> {
-    let path = req.uri().path().to_string();
+    let path = req.path().to_string();
     let method = req.method().clone();
 
     match (method, path.as_str()) {
-        (http::Method::GET, "/") => Response::ok("Campfire Rust Wokrer Root!"),
-        (http::Method::GET, "/api/ping") => Response::from_json(&service::get_ping()),
+        (Method::Get, "/") => Response::ok("Campfire Rust Worker Root!"),
+        (Method::Get, "/api/ping") => Response::from_json(&service::ping_response()),
+        (Method::Get, "/api/hello") => {
+            Response::from_json(&service::hello(get_param_value(req.url()?.query(), "name")))
+        }
+        (Method::Post, "/api/echo") => {
+            let body = req.text().await?;
+            Response::from_json(&service::echo(body))
+        }
+        (Method::Post, "/api/logs") => {
+            let log: Log = req.json().await?;
+            Response::from_json(&service::insert_log(&env, log).await)
+        }
         _ => Response::error("Not Found", 404),
     }
+}
+
+fn get_param_value(query: Option<&str>, key_name: &str) -> String {
+    query
+        .and_then(|q| {
+            q.split("&").find_map(|pair| {
+                let mut parts = pair.splitn(2, "=");
+                let key = parts.next();
+                let value = parts.next();
+
+                if key == Some(key_name) {
+                    Some(value?.to_string())
+                } else {
+                    None
+                }
+            })
+        })
+        .unwrap_or("stranger".to_string())
 }
