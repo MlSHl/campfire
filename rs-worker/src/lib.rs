@@ -1,6 +1,6 @@
 use worker::*;
 
-use crate::model::Log;
+use crate::model::{Log, UserDto};
 
 mod model;
 mod repository;
@@ -28,6 +28,10 @@ async fn fetch(
         (Method::Post, "/api/logs") => {
             let log: Log = req.json().await?;
             Response::from_json(&service::insert_log(&env, log).await)
+        }
+        (Method::Post, "/api/user") => {
+            let user: UserDto = req.json().await?;
+            Response::from_json(&service::register_user(&env, user).await)
         }
         _ => Response::error("Not Found", 404),
     }

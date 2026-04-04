@@ -57,6 +57,12 @@ pub struct User {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct UserDto {
+    pub email: String,
+    pub password: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Session {
     pub id: String,
     pub user_id: String,
