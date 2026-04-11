@@ -1,6 +1,6 @@
 use worker::*;
 
-use crate::model::Log;
+use crate::model::logbook::Log;
 
 pub async fn get_logs_for_user(env: &Env, user_id: &str) -> Result<Vec<Log>> {
     let db = env.d1("DB")?;

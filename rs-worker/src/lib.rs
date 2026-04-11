@@ -1,6 +1,6 @@
 use worker::*;
 
-use crate::model::{Log, UserDto};
+use crate::model::{logbook::Log, user::UserDto};
 
 mod model;
 mod repository;

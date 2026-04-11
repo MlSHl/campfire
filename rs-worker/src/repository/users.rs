@@ -1,6 +1,6 @@
 use worker::*;
 
-use crate::model::User;
+use crate::model::user::User;
 
 pub async fn insert_new_user(env: &Env, user: User) -> Result<()> {
     let db = env.d1("DB")?;

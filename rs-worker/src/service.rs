@@ -1,9 +1,13 @@
-use crate::model::{Log, MessageResponse, PongResponse, User, UserDto};
+use crate::model::general::{MessageResponse, PongResponse};
+use crate::model::logbook::Log;
+use crate::model::user::{User, UserDto};
+
 use crate::repository::logs::insert_log_for_user;
+use crate::repository::sessions::get_password_hash;
 use crate::repository::users::insert_new_user;
 
 use argon2::{
-    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
 use chrono::Utc;
@@ -95,4 +99,20 @@ pub fn hash_password(password: &str) -> Result<String, argon2::password_hash::Er
         .to_string();
 
     Ok(hash)
+}
+
+pub async fn verify_password(env: &Env, stored_hash: &str) -> bool {
+    let stored_hash = match get_password_hash(env, &user.email).await {
+        Ok(stored) => stored,
+        Err(_) => return false,
+    };
+
+    let parsed_hash = match PasswordHash::new(&stored_hash) {
+        Ok(hash) => hash,
+        Err(_) => return false,
+    };
+
+    Argon2::default()
+        .verify_password(user.password.as_bytes(), &parsed_hash)
+        .is_ok()
 }
