@@ -1,11 +1,10 @@
 use crate::model::general::MessageResponse;
 use crate::model::user::{User, UserDto};
 
-use crate::repository::sessions::get_password_hash;
 use crate::repository::users::insert_new_user;
 
 use argon2::{
-    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    password_hash::{rand_core::OsRng, PasswordHasher, SaltString},
     Argon2,
 };
 use chrono::Utc;
