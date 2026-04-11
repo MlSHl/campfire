@@ -17,21 +17,21 @@ async fn fetch(
 
     match (method, path.as_str()) {
         (Method::Get, "/") => Response::ok("Campfire Rust Worker Root!"),
-        (Method::Get, "/api/ping") => Response::from_json(&service::ping_response()),
-        (Method::Get, "/api/hello") => {
-            Response::from_json(&service::hello(get_param_value(req.url()?.query(), "name")))
-        }
+        (Method::Get, "/api/ping") => Response::from_json(&service::general::ping_response()),
+        (Method::Get, "/api/hello") => Response::from_json(&service::general::hello(
+            get_param_value(req.url()?.query(), "name"),
+        )),
         (Method::Post, "/api/echo") => {
             let body = req.text().await?;
-            Response::from_json(&service::echo(body))
+            Response::from_json(&service::general::echo(body))
         }
         (Method::Post, "/api/logs") => {
             let log: Log = req.json().await?;
-            Response::from_json(&service::insert_log(&env, log).await)
+            Response::from_json(&service::logbook::insert_log(&env, log).await)
         }
         (Method::Post, "/api/user") => {
             let user: UserDto = req.json().await?;
-            Response::from_json(&service::register_user(&env, user).await)
+            Response::from_json(&service::users::register_user(&env, user).await)
         }
         _ => Response::error("Not Found", 404),
     }
