@@ -2,7 +2,7 @@ use worker::*;
 
 use crate::model::logbook::Log;
 
-pub async fn get_logs_for_user(env: &Env, user_id: &str) -> Result<Vec<Log>> {
+pub async fn _get_logs_for_user(env: &Env, user_id: &str) -> Result<Vec<Log>> {
     let db = env.d1("DB")?;
 
     let stmt = db.prepare("SELECT * FROM logs WHERE user_id = ?");
@@ -13,7 +13,7 @@ pub async fn get_logs_for_user(env: &Env, user_id: &str) -> Result<Vec<Log>> {
     Ok(logs)
 }
 
-pub async fn insert_log_for_user(env: &Env, log: Log) -> Result<()> {
+pub async fn _insert_log_for_user(env: &Env, log: Log) -> Result<()> {
     let db = env.d1("DB")?;
 
     let stmt = db.prepare(

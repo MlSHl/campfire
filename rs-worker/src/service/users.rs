@@ -1,4 +1,4 @@
-use crate::model::general::MessageResponse;
+use crate::model::general::{MessageResponse, Status};
 use crate::model::user::{User, UserDto};
 
 use crate::repository::users::insert_new_user;
@@ -18,7 +18,7 @@ pub async fn register_user(env: &Env, user: UserDto) -> MessageResponse {
         Err(e) => {
             console_error!("Hashing error: {}", e);
             return MessageResponse {
-                status: "error",
+                status: Status::Error,
                 message: "password hashing failed".to_string(),
             };
         }
@@ -37,20 +37,20 @@ pub async fn register_user(env: &Env, user: UserDto) -> MessageResponse {
 
     match result {
         Ok(_) => MessageResponse {
-            status: "ok",
+            status: Status::Ok,
             message: "user registered successfully".to_string(),
         },
         Err(e) => {
             console_error!("Database error: {}", e);
             MessageResponse {
-                status: "error",
+                status: Status::Error,
                 message: "failed to register user".to_string(),
             }
         }
     }
 }
 
-pub fn hash_password(password: &str) -> Result<String, argon2::password_hash::Error> {
+fn hash_password(password: &str) -> Result<String, argon2::password_hash::Error> {
     let salt = SaltString::generate(&mut OsRng);
     let hash = Argon2::default()
         .hash_password(password.as_bytes(), &salt)?

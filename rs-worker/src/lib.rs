@@ -1,6 +1,7 @@
 use worker::*;
 
-use crate::model::{logbook::Log, user::UserDto};
+use crate::model::user::UserDto;
+use crate::service::auth::SESSION_TTL_SECONDS;
 
 mod model;
 mod repository;
@@ -25,13 +26,29 @@ async fn fetch(
             let body = req.text().await?;
             Response::from_json(&service::general::echo(body))
         }
-        (Method::Post, "/api/logs") => {
-            let log: Log = req.json().await?;
-            Response::from_json(&service::logbook::insert_log(&env, log).await)
-        }
         (Method::Post, "/api/user") => {
             let user: UserDto = req.json().await?;
             Response::from_json(&service::users::register_user(&env, user).await)
+        }
+        (Method::Post, "/api/session") => {
+            let user: UserDto = req.json().await?;
+            let login_res = service::auth::login(&env, user).await;
+
+            let mut resp = Response::from_json(&login_res)?;
+            if let Some(token) = &login_res.raw_token {
+                resp.headers_mut().set(
+                    "Set-Cookie",
+                    &format!(
+                        "session={}; HttpOnly; Path=/; SameSite=Lax; Max-Age={}",
+                        token, SESSION_TTL_SECONDS
+                    ),
+                )?;
+            }
+            Ok(resp)
+        }
+        (Method::Post, "/api/embers") => {
+            let embers_sync_request = req.json().await?;
+            Response::from_json(&service::embers::sync(&env, embers_sync_request).await)
         }
         _ => Response::error("Not Found", 404),
     }

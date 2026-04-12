@@ -1,4 +1,4 @@
-use crate::model::general::{MessageResponse, PongResponse};
+use crate::model::general::{MessageResponse, PongResponse, Status};
 
 pub fn ping_response() -> PongResponse {
     PongResponse {
@@ -8,15 +8,11 @@ pub fn ping_response() -> PongResponse {
 }
 
 pub fn hello(name: String) -> MessageResponse {
-    MessageResponse {
-        status: "ok",
-        message: format!("Hello, {name}!"),
-    }
+    let message = format!("Hello {name}");
+    MessageResponse::new(Status::Ok, &message)
 }
 
 pub fn echo(msg: String) -> MessageResponse {
-    MessageResponse {
-        status: "ok",
-        message: format!("echo says: {msg}"),
-    }
+    let message = format!("echo says: {msg}");
+    MessageResponse::new(Status::Ok, &message)
 }

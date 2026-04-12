@@ -13,3 +13,8 @@ pub struct UserDto {
     pub email: String,
     pub password: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct UserIdRow {
+    pub id: String,
+}
