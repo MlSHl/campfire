@@ -10,7 +10,7 @@ export function localToApiEmber(ember: Ember): ApiEmber {
 		hours_total: ember.hoursTotal,
 		created_at: ember.createdAt,
 		updated_at: ember.updatedAt,
-		deleted_at: null
+		deleted_at: "" 
 	};
 }
 
