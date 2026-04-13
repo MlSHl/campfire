@@ -3,6 +3,7 @@
 
     import LoginModal from '$lib/auth/LoginModal.svelte';
     import ThemeToggle from '$lib/ThemeToggle.svelte'; 
+    import SyncTestButton from '$lib/components/SyncTestButton.svelte';
 
     let open = $state(false);
     let showLogin = $state(false);
@@ -58,6 +59,7 @@
 				<LogIn size={16} />
 				Log in
 			</button>
+            <SyncTestButton />
 		</div>
     {/if}
 </div>

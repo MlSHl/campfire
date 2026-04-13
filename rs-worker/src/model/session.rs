@@ -42,3 +42,9 @@ pub struct MeResponse {
 pub struct MeRow {
     pub email: String,
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct AuthUser {
+    pub user_id: String,
+    pub email: String,
+}

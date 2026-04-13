@@ -44,3 +44,17 @@ export async function deleteEmber(id: string): Promise<void> {
 	const db = await getDb();
 	await db.delete('embers', id);
 }
+
+export async function replaceAllEmbers(embers: Ember[]): Promise<void> {
+	const db = await getDb();
+	const tx = db.transaction('embers', 'readwrite');
+	const store = tx.objectStore('embers');
+
+	await store.clear();
+
+	for (const ember of embers) {
+		await store.put(ember);
+	}
+
+	await tx.done;
+}

@@ -4,6 +4,7 @@ use chrono::{Duration, Utc};
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
+use crate::model::session::AuthUser;
 use crate::model::session::{MeRow, PasswordHashRow, Session};
 use crate::service::auth::SESSION_TTL_SECONDS;
 
@@ -91,4 +92,24 @@ pub async fn get_email_with_token(env: &Env, raw_token: String) -> Result<String
         Some(row) => Ok(row.email),
         None => Err(worker::Error::RustError("session not found".into())),
     }
+}
+
+pub async fn get_auth_user_with_token(env: &Env, raw_token: &str) -> Result<Option<AuthUser>> {
+    let token_hash = hash_session_token(raw_token);
+    let now = Utc::now().to_rfc3339();
+
+    let db = env.d1("DB")?;
+
+    let stmt = db.prepare(
+        "select users.id as user_id, users.email
+         from sessions
+         join users on users.id = sessions.user_id
+         where sessions.token_hash = ?1
+           and sessions.expires_at > ?2",
+    );
+    let stmt = stmt.bind(&[token_hash.into(), now.into()])?;
+
+    let result = stmt.first::<AuthUser>(None).await?;
+
+    Ok(result)
 }

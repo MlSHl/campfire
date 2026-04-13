@@ -39,7 +39,7 @@ async fn fetch(
                 resp.headers_mut().set(
                     "Set-Cookie",
                     &format!(
-                        "session={}; HttpOnly; Path=/; SameSite=Lax; Max-Age={}",
+                        "session={}; HttpOnly; Secure; Path=/; SameSite=Lax; Max-Age={}",
                         token, SESSION_TTL_SECONDS
                     ),
                 )?;
@@ -47,8 +47,15 @@ async fn fetch(
             Ok(resp)
         }
         (Method::Post, "/api/embers") => {
+            let auth_user = match service::auth::require_auth(&env, &req).await {
+                Ok(user) => user,
+                Err(resp) => return Ok(resp),
+            };
+
             let embers_sync_request = req.json().await?;
-            Response::from_json(&service::embers::sync(&env, embers_sync_request).await)
+            Response::from_json(
+                &service::embers::sync(&env, &auth_user.user_id, embers_sync_request).await,
+            )
         }
         (Method::Get, "/api/me") => Response::from_json(&service::auth::me(&env, &req).await),
         _ => Response::error("Not Found", 404),

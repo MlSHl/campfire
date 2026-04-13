@@ -6,7 +6,7 @@ use argon2::{
 };
 
 use crate::model::general::Status;
-use crate::model::session::{LoginResponse, MeResponse};
+use crate::model::session::{AuthUser, LoginResponse, MeResponse};
 use crate::model::user::UserDto;
 
 use crate::repository::sessions;
@@ -105,4 +105,25 @@ fn get_cookie_value(cookie_header: &str, name: &str) -> Option<String> {
             None
         }
     })
+}
+
+pub async fn require_auth(env: &Env, req: &Request) -> std::result::Result<AuthUser, Response> {
+    let cookie_header = match req.headers().get("Cookie") {
+        Ok(Some(value)) => value,
+        _ => return Err(Response::error("Unauthorized", 401).unwrap()),
+    };
+
+    let raw_token = match get_cookie_value(&cookie_header, "session") {
+        Some(token) => token,
+        None => return Err(Response::error("Unauthorized", 401).unwrap()),
+    };
+
+    match sessions::get_auth_user_with_token(env, &raw_token).await {
+        Ok(Some(auth_user)) => Ok(auth_user),
+        Ok(None) => Err(Response::error("Unauthorized", 401).unwrap()),
+        Err(e) => {
+            console_log!("require_auth error: {:?}", e);
+            Err(Response::error("Unauthorized", 401).unwrap())
+        }
+    }
 }
