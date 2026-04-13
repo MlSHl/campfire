@@ -6,11 +6,12 @@ export async function runEmberSync() {
 	const localEmbers = await getAllEmbers();
 	const apiPayload = localEmbers.map(localToApiEmber);
 
-	const response = await syncEmbers(apiPayload);
+    const response = await syncEmbers(apiPayload);
+    console.log('sync response:', response);
 
-	if (response.status !== 'Ok') {
-		throw new Error('Ember sync failed');
-	}
+    if (response.status !== 'Ok') {
+        throw new Error(`Ember sync failed: ${response.status}`);
+    }
 
 	const canonicalLocalEmbers = response.embers.map(apiToLocalEmber);
 	await replaceAllEmbers(canonicalLocalEmbers);
