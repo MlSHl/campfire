@@ -12,6 +12,10 @@ self.addEventListener('install', (event: ExtendableEvent) => {
 		(async () => {
 			const cache = await caches.open(CACHE);
 			await cache.addAll(ASSETS);
+
+			const shellResponse = await fetch(APP_SHELL);
+			await cache.put(APP_SHELL, shellResponse.clone());
+
 			await self.skipWaiting();
 		})()
 	);
@@ -23,9 +27,7 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
 			const keys = await caches.keys();
 
 			await Promise.all(
-				keys
-					.filter((key) => key !== CACHE)
-					.map((key) => caches.delete(key))
+				keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))
 			);
 
 			await self.clients.claim();
@@ -64,14 +66,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 			const cached = await caches.match(request);
 			if (cached) return cached;
 
-			try {
-				return await fetch(request);
-			} catch {
-				return new Response('Offline', {
-					status: 503,
-					statusText: 'Service Unavailable'
-				});
-			}
+			return fetch(request);
 		})()
 	);
 });
