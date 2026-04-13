@@ -31,3 +31,14 @@ impl LoginResponse {
         }
     }
 }
+
+#[derive(Serialize, Debug)]
+pub struct MeResponse {
+    pub authenticated: bool,
+    pub email: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct MeRow {
+    pub email: String,
+}

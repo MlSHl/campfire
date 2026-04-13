@@ -1,4 +1,4 @@
-use worker::{console_log, Env};
+use worker::*;
 
 use argon2::{
     password_hash::{PasswordHash, PasswordVerifier},
@@ -6,7 +6,7 @@ use argon2::{
 };
 
 use crate::model::general::Status;
-use crate::model::session::LoginResponse;
+use crate::model::session::{LoginResponse, MeResponse};
 use crate::model::user::UserDto;
 
 use crate::repository::sessions;
@@ -52,4 +52,57 @@ pub async fn login(env: &Env, user: UserDto) -> LoginResponse {
     };
 
     LoginResponse::new(Status::Ok, "login successful", Some(raw_token))
+}
+
+pub async fn me(env: &Env, req: &Request) -> MeResponse {
+    let cookie_header = match req.headers().get("Cookie") {
+        Ok(Some(value)) => value,
+        _ => {
+            return MeResponse {
+                authenticated: false,
+                email: None,
+            }
+        }
+    };
+
+    let raw_token = match get_cookie_value(&cookie_header, "session") {
+        Some(token) => token,
+        None => {
+            return MeResponse {
+                authenticated: false,
+                email: None,
+            }
+        }
+    };
+
+    let email = match sessions::get_email_with_token(env, raw_token).await {
+        Ok(email) => email,
+        Err(e) => {
+            console_log!("Error getting email with token: {}", e);
+            return MeResponse {
+                authenticated: false,
+                email: None,
+            };
+        }
+    };
+
+    MeResponse {
+        authenticated: true,
+        email: Some(email),
+    }
+}
+
+fn get_cookie_value(cookie_header: &str, name: &str) -> Option<String> {
+    cookie_header.split(';').find_map(|part| {
+        let trimmed = part.trim();
+        let mut pieces = trimmed.splitn(2, '=');
+        let key = pieces.next()?;
+        let value = pieces.next()?;
+
+        if key == name {
+            Some(value.to_string())
+        } else {
+            None
+        }
+    })
 }

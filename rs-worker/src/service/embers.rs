@@ -1,4 +1,4 @@
-use worker::{console_log, Env};
+use worker::Env;
 
 use crate::model::ember::{EmberSyncRequest, EmberSyncResponse};
 use crate::model::general::Status;

@@ -50,6 +50,7 @@ async fn fetch(
             let embers_sync_request = req.json().await?;
             Response::from_json(&service::embers::sync(&env, embers_sync_request).await)
         }
+        (Method::Get, "/api/me") => Response::from_json(&service::auth::me(&env, &req).await),
         _ => Response::error("Not Found", 404),
     }
 }
