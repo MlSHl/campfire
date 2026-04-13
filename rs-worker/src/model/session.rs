@@ -10,6 +10,11 @@ pub struct Session {
     pub expires_at: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PasswordHashRow {
+    pub password_hash: String,
+}
+
 #[derive(Serialize, Debug)]
 pub struct LoginResponse {
     pub status: Status,

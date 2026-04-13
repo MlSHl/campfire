@@ -4,7 +4,7 @@ use chrono::{Duration, Utc};
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
-use crate::model::session::Session;
+use crate::model::session::{PasswordHashRow, Session};
 use crate::service::auth::SESSION_TTL_SECONDS;
 
 // Private functions
@@ -44,10 +44,10 @@ pub async fn get_password_hash(env: &Env, email: &str) -> Result<String> {
     let stmt = db.prepare("select password_hash from users where email = ?");
     let stmt = stmt.bind(&[email.into()])?;
 
-    let result = stmt.first::<String>(None).await?;
+    let result = stmt.first::<PasswordHashRow>(None).await?;
 
     match result {
-        Some(hash) => Ok(hash),
+        Some(row) => Ok(row.password_hash),
         None => Err(worker::Error::RustError("user not found".into())),
     }
 }
