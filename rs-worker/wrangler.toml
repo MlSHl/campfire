@@ -1,6 +1,10 @@
 name = "rs-worker"
 main = "build/index.js"
-compatibility_date = "2026-04-03"
+compatibility_date = "2026-04-13"
+
+[[routes]]
+pattern = "campfire.name/api/*"
+zone_name = "campfire.name"
 
 [build]
 command = "cargo install -q \"worker-build@^0.7\" && worker-build --release"
