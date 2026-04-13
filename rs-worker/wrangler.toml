@@ -13,3 +13,18 @@ command = "cargo install -q \"worker-build@^0.7\" && worker-build --release"
 binding = "DB"
 database_name = "campfire-db"
 database_id = "72703a55-3570-48db-9f1b-37b0a3fc8329"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
