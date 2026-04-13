@@ -1,5 +1,5 @@
 <script lang="ts">
-    import ThemeToggle from "$lib/ThemeToggle.svelte";
+    import SettingsMenu from "$lib/navigation/SettingsMenu.svelte";
     import NavTab from '$lib/navigation/NavTab.svelte'
 </script>
 
@@ -11,7 +11,7 @@
             <NavTab tab_name="embers"/>
         </div>
         <div class="flex justify-center items-center w-1/12">
-            <ThemeToggle/>
+            <SettingsMenu/>
         </div>
     </div>
 </nav>
