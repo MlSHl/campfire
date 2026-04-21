@@ -10,7 +10,7 @@
 	let saveTimer: ReturnType<typeof setTimeout> | null = null;
 
 	onMount(async () => {
-		ember = await getEmber(page.params.id);
+		ember = await getEmber(page.params.id ?? "");
 	});
 
 	onDestroy(() => {
@@ -95,8 +95,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursToday', -1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
-					>
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1] touch-manipulation">
 						−
 					</button>
 
@@ -107,8 +106,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursToday', 1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
-					>
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]  touch-manipulation">
 						+
 					</button>
 				</div>
@@ -121,7 +119,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursThisWeek', -1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]  touch-manipulation"
 					>
 						−
 					</button>
@@ -133,7 +131,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursThisWeek', 1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]  touch-manipulation"
 					>
 						+
 					</button>
@@ -147,7 +145,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursTotal', -1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1] touch-manipulation "
 					>
 						−
 					</button>
@@ -159,7 +157,7 @@ Additionally, add proper time wheel UI for mobile.
 					<button
 						type="button"
 						onclick={() => changeField('hoursTotal', 1)}
-						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1]"
+						class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/60 text-lg font-medium text-zinc-900 transition hover:bg-white/80 dark:bg-white/[0.06] dark:text-zinc-100 dark:hover:bg-white/[0.1] touch-manipulation"
 					>
 						+
 					</button>
