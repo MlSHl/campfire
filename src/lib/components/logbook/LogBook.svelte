@@ -17,7 +17,7 @@
     + new log
 </button>
 {#if logs.length === 0}
-    <div class="text-stone-500 dark:text-slate-500 p-4">no logs yet</div>
+    <div class="text-stone-500 dark:text-slate-500 px-4 py-5">no logs yet</div>
 {:else}
     {#each logs as log (log.id)}
         <LogEntry {log} {selectedLog} {selectLog} {isMobile}/>

@@ -41,7 +41,7 @@
 				onblur={handleBlur}
 				placeholder="Untitled note"
 				class={`w-full border-0 bg-transparent pb-2 font-semibold tracking-tight text-zinc-900 outline-none placeholder:text-zinc-500 focus:outline-none dark:text-zinc-100 dark:placeholder:text-zinc-500 ${
-					isMobile ? 'text-lg' : 'text-2xl'
+					isMobile ? 'text-2xl' : 'text-3xl'
 				}`}
 			/>
 
@@ -53,7 +53,7 @@
 				placeholder="Begin logging..."
 				class={`mt-5 min-h-0 w-full flex-1 resize-none border-0 bg-transparent outline-none placeholder:text-stone-400 focus:outline-none dark:placeholder:text-slate-500 ${
 					isMobile
-						? 'text-base leading-6 text-stone-800 dark:text-[#b7ada1]'
+						? 'text-xl leading-6 text-stone-800 dark:text-[#b7ada1]'
 						: 'text-base leading-7 text-stone-800 dark:text-[#b7ada1]'
 				}`}
 			>{log.content}</textarea>

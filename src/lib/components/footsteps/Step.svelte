@@ -67,7 +67,7 @@
 		<span
 			bind:offsetWidth={mirrorWidth}
 			aria-hidden="true"
-			class="pointer-events-none invisible absolute left-0 top-0 inline-block whitespace-pre py-2 text-sm text-zinc-800 dark:text-zinc-100"
+			class="pointer-events-none invisible absolute left-0 top-0 inline-block whitespace-pre py-5 text-lg text-zinc-800 dark:text-zinc-100"
 		>
 			{step.name || 'next...'}
 		</span>
@@ -79,7 +79,7 @@
 			oninput={scheduleSave}
 			onblur={flushSave}
 			style={`width:${inputWidth+30}px`}
-			class="min-w-[72px] max-w-[260px] bg-transparent py-2 text-sm text-zinc-800 focus:outline-none dark:text-zinc-100"
+			class="min-w-[72px] max-w-[260px] bg-transparent py-5 text-lg text-zinc-800 focus:outline-none dark:text-zinc-100"
 			class:line-through={step.completed}
 			class:text-zinc-400={step.completed}
 			class:dark:text-zinc-500={step.completed}

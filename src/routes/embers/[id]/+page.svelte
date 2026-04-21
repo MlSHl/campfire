@@ -89,7 +89,7 @@ Additionally, add proper time wheel UI for mobile.
 
 		<div class="mt-4 space-y-3">
 			<div class="flex items-center justify-between rounded-2xl border border-orange-200 bg-orange-50/60 px-4 py-4 dark:border-stone-800 dark:bg-[#151a28]">
-				<div class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Today</div>
+				<div class="text-lg font-medium text-zinc-700 dark:text-zinc-300">Today</div>
 
 				<div class="flex items-center gap-3">
 					<button
@@ -100,7 +100,7 @@ Additionally, add proper time wheel UI for mobile.
 						−
 					</button>
 
-					<div class="min-w-[2rem] text-center text-base font-semibold text-zinc-900 dark:text-zinc-100">
+					<div class="min-w-[2rem] text-center text-lg font-semibold text-zinc-900 dark:text-zinc-100">
 						{ember.hoursToday}
 					</div>
 
@@ -115,7 +115,7 @@ Additionally, add proper time wheel UI for mobile.
 			</div>
 
 			<div class="flex items-center justify-between rounded-2xl border border-orange-200 bg-orange-50/60 px-4 py-4 dark:border-stone-800 dark:bg-[#151a28]">
-				<div class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Week</div>
+				<div class="text-lg font-medium text-zinc-700 dark:text-zinc-300">Week</div>
 
 				<div class="flex items-center gap-3">
 					<button
@@ -126,7 +126,7 @@ Additionally, add proper time wheel UI for mobile.
 						−
 					</button>
 
-					<div class="min-w-[2rem] text-center text-base font-semibold text-zinc-900 dark:text-zinc-100">
+					<div class="min-w-[2rem] text-center text-lg font-semibold text-zinc-900 dark:text-zinc-100">
 						{ember.hoursThisWeek}
 					</div>
 
@@ -141,7 +141,7 @@ Additionally, add proper time wheel UI for mobile.
 			</div>
 
 			<div class="flex items-center justify-between rounded-2xl border border-orange-200 bg-orange-50/60 px-4 py-4 dark:border-stone-800 dark:bg-[#151a28]">
-				<div class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Total</div>
+				<div class="text-lg font-medium text-zinc-700 dark:text-zinc-300">Total</div>
 
 				<div class="flex items-center gap-3">
 					<button
@@ -152,7 +152,7 @@ Additionally, add proper time wheel UI for mobile.
 						−
 					</button>
 
-					<div class="min-w-[2rem] text-center text-base font-semibold text-zinc-900 dark:text-zinc-100">
+					<div class="min-w-[2rem] text-center text-lg font-semibold text-zinc-900 dark:text-zinc-100">
 						{ember.hoursTotal}
 					</div>
 

@@ -55,7 +55,7 @@
 									updateEmberField(row.id, 'name', (e.currentTarget as HTMLInputElement).value)}
 								onblur={() => saveEmber(row.id)}
 								placeholder="untitled"
-								class="w-full bg-transparent text-center text-base font-medium text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
+								class="w-full bg-transparent text-center text-lg font-medium text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-500"
 							/>
 						</td>
 
@@ -66,7 +66,7 @@
 								oninput={(e) =>
 									updateEmberField(row.id, 'hoursToday', (e.currentTarget as HTMLInputElement).value)}
 								onblur={() => saveEmber(row.id)}
-								class="w-full bg-transparent text-center text-base text-zinc-700 outline-none dark:text-zinc-300"
+								class="w-full bg-transparent text-center text-lg text-zinc-700 outline-none dark:text-zinc-300"
 							/>
 						</td>
 
@@ -77,7 +77,7 @@
 								oninput={(e) =>
 									updateEmberField(row.id, 'hoursThisWeek', (e.currentTarget as HTMLInputElement).value)}
 								onblur={() => saveEmber(row.id)}
-								class="w-full bg-transparent text-center text-base text-zinc-700 outline-none dark:text-zinc-300"
+								class="w-full bg-transparent text-center text-lg text-zinc-700 outline-none dark:text-zinc-300"
 							/>
 						</td>
 
@@ -88,11 +88,11 @@
 								oninput={(e) =>
 									updateEmberField(row.id, 'hoursTotal', (e.currentTarget as HTMLInputElement).value)}
 								onblur={() => saveEmber(row.id)}
-								class="w-full bg-transparent text-center text-base text-zinc-700 outline-none dark:text-zinc-300"
+								class="w-full bg-transparent text-center text-lg text-zinc-700 outline-none dark:text-zinc-300"
 							/>
 						</td>
 
-						<td class="truncate px-4 py-4 text-center text-base text-zinc-700 dark:text-zinc-300">
+						<td class="truncate px-4 py-4 text-center text-lg text-zinc-700 dark:text-zinc-300">
 							<button
 								onclick={() => removeEmber(row.id)}
 								class="rounded-md border px-2 py-1 hover:bg-red-500/20"
@@ -108,7 +108,7 @@
 
 	<button
 		onclick={addEmber}
-		class="pointer-events-auto w-full border-r border-black/10 bg-orange-100/80 px-4 py-3 text-center text-sm font-medium text-zinc-900 transition hover:bg-orange-100 dark:border-white/10 dark:bg-zinc-800/40 dark:text-zinc-100 dark:hover:bg-zinc-700"
+		class="pointer-events-auto w-full border-r border-black/10 bg-orange-100/80 px-4 py-3 text-center text-lg font-medium text-zinc-900 transition hover:bg-orange-100 dark:border-white/10 dark:bg-zinc-800/40 dark:text-zinc-100 dark:hover:bg-zinc-700"
 	>
 		+
 	</button>
