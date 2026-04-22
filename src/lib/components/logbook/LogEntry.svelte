@@ -27,7 +27,7 @@
 			: 'hover:bg-orange-100 dark:hover:bg-[#151a28]'
 	}`}
 >
-<div class="flex items-center justify-between gap-3 border-b border-zinc-200 pb-2 dark:border-stone-800 md:border-b-0 md:border-r md:pb-0 ">
+<div class="flex items-center justify-between gap-3 border-b border-zinc-200 pb-2 dark:border-stone-800 md:border-b-0 md:pb-0 ">
 		<div class="min-w-0 flex-1">
 			<div class="truncate text-lg font-medium text-zinc-800 dark:text-zinc-100">
 				{log.name?.trim() || 'Untitled note'}

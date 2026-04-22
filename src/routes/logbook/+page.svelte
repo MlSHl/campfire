@@ -58,7 +58,7 @@
 
 </script>
 
-<div class="hidden h-[calc(100vh-5rem)] md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)]">
+<div class="hidden h-full md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] md:divide-x md:divide-stone-800">
 	<div>
 		<LogBook {logs} {selectedLog} {addLog} {selectLog} isMobile={false}/>
 	</div>
