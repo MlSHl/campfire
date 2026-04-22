@@ -4,6 +4,7 @@
     import LoginModal from '$lib/auth/LoginModal.svelte';
     import ThemeToggle from '$lib/ThemeToggle.svelte'; 
     import SyncTestButton from '$lib/components/SyncTestButton.svelte';
+    import SettingsTab from '$lib/navigation/SettingsTab.svelte';
 
     let open = $state(false);
     let showLogin = $state(false);
@@ -45,21 +46,25 @@
             aria-label="Close settings menu"
         ></button>
 
-		<div class="fixed z-20 right-0 top-[3.65rem] rounded-bl-2xl border border-orange-200 bg-orange-50 shadow-sm dark:border-stone-800 dark:bg-[#151a28] dark:text-zinc-300 p-4 ">
-			<div>
+		<div class="fixed z-20 right-0 top-[3.65rem] rounded-bl-2xl border border-orange-200 bg-orange-50 shadow-sm dark:border-stone-800 dark:bg-[#0f1220] dark:text-zinc-300">
+			<SettingsTab first={true}>
 				<span>Sync: local only</span>
-			</div>
+			</SettingsTab>
 
-			<div class="flex items-center justify-between">
-				<span>Theme</span>
+			<SettingsTab>
+				Theme
 				<ThemeToggle />
-			</div>
+			</SettingsTab>
 
-			<button type="button" onclick={openLogin}>
-				<LogIn size={16} />
-				Log in
-			</button>
-            <SyncTestButton />
+            <SettingsTab>
+                <button type="button" onclick={openLogin} class="inline-flex items-center gap-2">
+                    <LogIn size={16} />
+                    <span>Log in</span>
+                </button>
+            </SettingsTab>
+            <SettingsTab>
+                <SyncTestButton />
+            </SettingsTab>
 		</div>
     {/if}
 </div>
